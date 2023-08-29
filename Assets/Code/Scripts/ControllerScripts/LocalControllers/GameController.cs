@@ -26,12 +26,15 @@ namespace ProgressApocalypse
         [SerializeField] private TMP_Text resourcesIncomeText;
         [SerializeField] private TMP_Text resourcesOutcomeText;
 
-        private float dayTimer = 0.050f; //0.3
+        private readonly float dayTimerBase = 0.050f; //0.3
+
+        private float dayTimer;
         private float currentTime = 0;
 
 
         private void Update()
         {
+            dayTimer = dayTimerBase * gameDataController.gameDataHolder.gameBoost;
             if (gameDataController.IsYearsOverLifespan())
             {
                 if (!gameDataController.gameDataHolder.gameOver)
@@ -60,7 +63,7 @@ namespace ProgressApocalypse
                 resourcesOutcomeText.text = $"<color=#916969>Outcome</color>/day: {PaFunctions.FormatResources(gameDataController.GetCurrentOutcome())}";
 
                 //timewarp morale and technology text
-                timeBoostText.text = $"<color=#C80B88>Time Boost:</color> x{gameDataController.gameDataHolder.gameSpeed}";
+                timeBoostText.text = $"<color=#C80B88>Time Boost:</color> x{gameDataController.gameDataHolder.gameBoost}";
                 moraleText.text = $"<color=#7EB1EC>Morale:</color> {multipliersController.GetMorale()}";
                 technologyText.text = $"<color=#806991>Technology:</color> {gameDataController.gameDataHolder.technology}";
 
@@ -72,7 +75,7 @@ namespace ProgressApocalypse
 
         public void AddAvaliableTasksAndItems()
         {
-            foreach (var item in tableItemController.tableItemHolder.Jobs)
+            foreach (var item in tableItemController.tableItemHolder.JobsClone)
             {
                 if(item.jobTask.unlocked)
                 {
@@ -80,7 +83,7 @@ namespace ProgressApocalypse
                 }
             }
 
-            foreach (var item in tableItemController.tableItemHolder.Skills)
+            foreach (var item in tableItemController.tableItemHolder.SkillsClone)
             {
                 if (item.skillTask.unlocked)
                 {
@@ -88,7 +91,7 @@ namespace ProgressApocalypse
                 }
             }
 
-            foreach (var item in tableItemController.tableItemHolder.Items)
+            foreach (var item in tableItemController.tableItemHolder.ItemsClone)
             {
                 if (item.item.unlocked)
                 {

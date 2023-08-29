@@ -12,7 +12,7 @@ namespace ProgressApocalypse
 
         public void UpdateMultipliers()
         {
-            foreach (Job task in tableItemHolder.Jobs)
+            foreach (Job task in tableItemHolder.JobsClone)
             {
                 task.jobTask.xpMultiplers.Clear();
                 task.jobTask.incomeMultipliers.Clear();
@@ -40,7 +40,7 @@ namespace ProgressApocalypse
                 }
             }
 
-            foreach (Skill task in tableItemHolder.Skills)
+            foreach (Skill task in tableItemHolder.SkillsClone)
             {
                 task.skillTask.xpMultiplers.Clear();
 
@@ -71,7 +71,7 @@ namespace ProgressApocalypse
                 }
             }
 
-            foreach (Item item in tableItemHolder.Items)
+            foreach (Item item in tableItemHolder.ItemsClone)
             {
                 item.item.expenseMultiplier.Clear();
 
@@ -93,7 +93,7 @@ namespace ProgressApocalypse
 
         private float GetEffect(string name)
         {
-            SkillTask item = tableItemHolder.Skills.Single(x => x.skillTask.name == name).skillTask;
+            SkillTask item = tableItemHolder.SkillsClone.Single(x => x.skillTask.name == name).skillTask;
             if (!item.unlocked)
             {
                 return 1.0f;
@@ -104,7 +104,7 @@ namespace ProgressApocalypse
 
         private float GetItemEffect(string name)
         {
-            ItemBase item = tableItemHolder.Items.Single(x => x.item.name == name).item;
+            ItemBase item = tableItemHolder.ItemsClone.Single(x => x.item.name == name).item;
             if(!item.unlocked || !item.active)
             {
                 return 1.0f;

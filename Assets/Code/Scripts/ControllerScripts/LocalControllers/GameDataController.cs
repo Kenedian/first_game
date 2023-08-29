@@ -52,7 +52,7 @@ namespace ProgressApocalypse
         public float GetGameSpeed()
         {
             float boost = GetEffect("Time Travel") * gameDataHolder.speedBoostRemainingTime > 0 ? 2 : 1;
-            float speed = gameDataHolder.gameSpeed * (gameDataHolder.timeBoostEnabled ? boost : 1) * Convert.ToInt32(!gameDataHolder.paused);
+            float speed = gameDataHolder.gameBoost * (gameDataHolder.timeBoostEnabled ? boost : 1) * Convert.ToInt32(!gameDataHolder.paused);
             return speed;
         }
 
@@ -101,28 +101,28 @@ namespace ProgressApocalypse
 
         public float GetEffect(string name)
         {
-            SkillTask item = tableItemHolder.Skills.Single(x => x.skillTask.name == name).skillTask;
+            SkillTask item = tableItemHolder.SkillsClone.Single(x => x.skillTask.name == name).skillTask;
 
             return item != null ? item.GetEffectAmmount() : 1.0f;
         }
 
         public ItemBase GetItem(string name)
         {
-            ItemBase item = tableItemHolder.Items.Single(x => x.item.name == name).item;
+            ItemBase item = tableItemHolder.ItemsClone.Single(x => x.item.name == name).item;
 
             return item;
         }
 
         public JobTask GetJob(string name)
         {
-            JobTask item = tableItemHolder.Jobs.Single(x => x.jobTask.name == name).jobTask;
+            JobTask item = tableItemHolder.JobsClone.Single(x => x.jobTask.name == name).jobTask;
 
             return item;
         }
 
         public SkillTask GetSkill(string name)
         {
-            SkillTask item = tableItemHolder.Skills.Single(x => x.skillTask.name == name).skillTask;
+            SkillTask item = tableItemHolder.SkillsClone.Single(x => x.skillTask.name == name).skillTask;
 
             return item;
         }

@@ -45,7 +45,7 @@ namespace ProgressApocalypse
             return false;
         }
 
-        public string getRequirementString(PaEnums.RequirementTypes type, string name)
+        public string GetRequirementString(PaEnums.RequirementTypes type, string name)
         {
             string text = "Required: ";
 
@@ -54,8 +54,8 @@ namespace ProgressApocalypse
                 var requirement = requirementsHolder.TaskRequirements.Single(x => x.nameOfUnlock == name);
                 for (int i = 0; i < requirement.requirements.Count(); i++)
                 {
-                    Task required = tableItemHolder.Jobs.Single(x => x.jobTask.name == requirement.requirements[i].nameOfTask).jobTask as Task ??
-                            tableItemHolder.Skills.Single(x => x.skillTask.name == requirement.requirements[i].nameOfTask).skillTask;
+                    Task required = tableItemHolder.JobsClone.Single(x => x.jobTask.name == requirement.requirements[i].nameOfTask).jobTask as Task ??
+                            tableItemHolder.SkillsClone.Single(x => x.skillTask.name == requirement.requirements[i].nameOfTask).skillTask;
 
                     if (!IsTaskFulfilled(requirement.requirements[i]))
                     {
@@ -87,8 +87,8 @@ namespace ProgressApocalypse
         {
             bool fulfilled = false;
 
-            Task required = tableItemHolder.Jobs.Single(x => x.jobTask.name == requirement.nameOfTask).jobTask as Task ??
-                            tableItemHolder.Skills.Single(x => x.skillTask.name == requirement.nameOfTask).skillTask;
+            Task required = tableItemHolder.JobsClone.Single(x => x.jobTask.name == requirement.nameOfTask).jobTask as Task ??
+                            tableItemHolder.SkillsClone.Single(x => x.skillTask.name == requirement.nameOfTask).skillTask;
 
             if(required != null)
             {

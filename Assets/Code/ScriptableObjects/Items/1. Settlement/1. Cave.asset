@@ -21,5 +21,5 @@ MonoBehaviour:
     effect: 1
     description: Morale
     unlocked: 1
-    active: 0
+    active: 1
     expenseMultiplier: []

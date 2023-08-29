@@ -10,7 +10,7 @@ namespace ProgressApocalypse
         public int days = 365 * 14;
         public float technology = 0;
 
-        public float gameSpeed = 1;
+        public float gameBoost = 1;
         public int lifeSpan = 365 * 70;
 
         public bool paused = false;

@@ -9,7 +9,7 @@ namespace ProgressApocalypse
 {
     public class TableItemController : MonoBehaviour
     {
-        [SerializeField] public TableItemsHolder tableItemHolder;
+        public TableItemsHolder tableItemHolder;
         [SerializeField] private GameDataController gameDataController;
 
         [SerializeField] private GameObject jobsContent;
@@ -98,16 +98,18 @@ namespace ProgressApocalypse
                     }
 
                     EventTrigger trigger = tableItem.GetComponent<TableItemSlider>().slider.gameObject.GetComponent<EventTrigger>();
-                    EventTrigger.Entry entry = new();
-                    entry.eventID = EventTriggerType.PointerClick;
+                    EventTrigger.Entry entry = new()
+                    {
+                        eventID = EventTriggerType.PointerClick
+                    };
                     entry.callback.AddListener( (eventData) =>
                     {
-                        for (int i = 0; i < tableItemHolder.Jobs.Count(); i++)
+                        for (int i = 0; i < tableItemHolder.JobsClone.Count(); i++)
                         {
-                            if (tableItemHolder.Jobs[i].jobTask.name == name)
+                            if (tableItemHolder.JobsClone[i].jobTask.name == name)
                             {
                                 DisableAllJobs();
-                                tableItemHolder.Jobs[i].jobTask.active = true;
+                                tableItemHolder.JobsClone[i].jobTask.active = true;
                                 tableItem.GetComponent<TableItemSlider>().setActive(true);
                                 gameDataController.gameDataHolder.currentJob = name;
                                 break;
@@ -161,27 +163,29 @@ namespace ProgressApocalypse
                     tableItem.GetComponent<TableItemSlider>().secondValueToggleContainer
                         .GetComponent<Toggle>().onValueChanged.AddListener(toggle =>
                         {
-                            for (int i = 0; i < tableItemHolder.Skills.Count(); i++)
+                            for (int i = 0; i < tableItemHolder.SkillsClone.Count(); i++)
                             {
-                                if (tableItemHolder.Skills[i].skillTask.name == name)
+                                if (tableItemHolder.SkillsClone[i].skillTask.name == name)
                                 {
-                                    tableItemHolder.Skills[i].skillTask.autoLearn = toggle;
+                                    tableItemHolder.SkillsClone[i].skillTask.autoLearn = toggle;
                                     break;
                                 }
                             }
                         });
 
                     EventTrigger trigger = tableItem.GetComponent<TableItemSlider>().slider.gameObject.GetComponent<EventTrigger>();
-                    EventTrigger.Entry entry = new();
-                    entry.eventID = EventTriggerType.PointerClick;
+                    EventTrigger.Entry entry = new()
+                    {
+                        eventID = EventTriggerType.PointerClick
+                    };
                     entry.callback.AddListener((eventData) =>
                     {
-                        for (int i = 0; i < tableItemHolder.Skills.Count(); i++)
+                        for (int i = 0; i < tableItemHolder.SkillsClone.Count(); i++)
                         {
-                            if (tableItemHolder.Skills[i].skillTask.name == name)
+                            if (tableItemHolder.SkillsClone[i].skillTask.name == name)
                             {
                                 DisableAllSkills();
-                                tableItemHolder.Skills[i].skillTask.active = true;
+                                tableItemHolder.SkillsClone[i].skillTask.active = true;
                                 tableItem.GetComponent<TableItemSlider>().setActive(true);
                                 gameDataController.gameDataHolder.currentSkill = name;
                                 break;
@@ -234,18 +238,18 @@ namespace ProgressApocalypse
 
                     tableItem.GetComponent<TableItemToggle>().toggle.GetComponent<Toggle>().onValueChanged.AddListener(toggle =>
                     {
-                        for (int i = 0; i < tableItemHolder.Items.Count(); i++)
+                        for (int i = 0; i < tableItemHolder.ItemsClone.Count(); i++)
                         {
-                            if (tableItemHolder.Items[i].item.name == name)
+                            if (tableItemHolder.ItemsClone[i].item.name == name)
                             {
                                 if (toggle)
                                 {
-                                    if (tableItemHolder.Items[i].item.category == PaEnums.MarketCategories.Settlement)
+                                    if (tableItemHolder.ItemsClone[i].item.category == PaEnums.MarketCategories.Settlement)
                                     {
                                         DisableAllButSettlements(name);
                                         tableItem.GetComponent<TableItemToggle>().toggle.GetComponent<Toggle>().isOn = true;
                                         gameDataController.gameDataHolder.currentSettlement = name;
-                                        tableItemHolder.Items[i].item.active = true;
+                                        tableItemHolder.ItemsClone[i].item.active = true;
                                         break;
                                     }
 
@@ -253,9 +257,17 @@ namespace ProgressApocalypse
                                 }
                                 else
                                 {
+                                    if (tableItemHolder.ItemsClone[i].item.category == PaEnums.MarketCategories.Settlement)
+                                    {
+                                        if (tableItemHolder.ItemsClone[i].item.active)
+                                        {
+                                            tableItem.GetComponent<TableItemToggle>().toggle.GetComponent<Toggle>().isOn = true;
+                                            break;
+                                        }
+                                    }
                                     gameDataController.gameDataHolder.currentRent.Remove(name);
                                 }
-                                tableItemHolder.Items[i].item.active = toggle;
+                                tableItemHolder.ItemsClone[i].item.active = toggle;
                                 break;
                             }
                         }
@@ -304,9 +316,9 @@ namespace ProgressApocalypse
 
         public void DisableAllJobs()
         {
-            for (int i = 0; i < tableItemHolder.Jobs.Count(); i++)
+            for (int i = 0; i < tableItemHolder.JobsClone.Count(); i++)
             {
-                tableItemHolder.Jobs[i].jobTask.active = false;
+                tableItemHolder.JobsClone[i].jobTask.active = false;
             }
 
             for (int i = 0; i < rowsJob.Count; i++)
@@ -317,9 +329,9 @@ namespace ProgressApocalypse
 
         public void DisableAllSkills()
         {
-            for (int i = 0; i < tableItemHolder.Skills.Count(); i++)
+            for (int i = 0; i < tableItemHolder.SkillsClone.Count(); i++)
             {
-                tableItemHolder.Skills[i].skillTask.active = false;
+                tableItemHolder.SkillsClone[i].skillTask.active = false;
             }
 
             for (int i = 0; i < rowsSkill.Count; i++)
@@ -330,15 +342,15 @@ namespace ProgressApocalypse
 
         public void DisableAllRents()
         {
-            for (int i = 0; i < tableItemHolder.Items.Count(); i++)
+            for (int i = 0; i < tableItemHolder.ItemsClone.Count(); i++)
             {
-                if (tableItemHolder.Items[i].item.category == PaEnums.MarketCategories.Rent)
+                if (tableItemHolder.ItemsClone[i].item.category == PaEnums.MarketCategories.Rent)
                 {
-                    tableItemHolder.Items[i].item.active = false;
+                    tableItemHolder.ItemsClone[i].item.active = false;
 
                     for (int j = 0; j < rowsItems.Count; j++)
                     {
-                        if (tableItemHolder.Items[i].item.name == rowsItems[j].GetComponent<TableItemToggle>().ItemName)
+                        if (tableItemHolder.ItemsClone[i].item.name == rowsItems[j].GetComponent<TableItemToggle>().ItemName)
                         {
                             rowsItems[j].GetComponent<TableItemToggle>().toggle.isOn = false;
                         }
@@ -349,15 +361,15 @@ namespace ProgressApocalypse
 
         public void DisableAllSettlements()
         {
-            for (int i = 0; i < tableItemHolder.Items.Count(); i++)
+            for (int i = 0; i < tableItemHolder.ItemsClone.Count(); i++)
             {
-                if (tableItemHolder.Items[i].item.category == PaEnums.MarketCategories.Settlement)
+                if (tableItemHolder.ItemsClone[i].item.category == PaEnums.MarketCategories.Settlement)
                 {
-                    tableItemHolder.Items[i].item.active = false;
+                    tableItemHolder.ItemsClone[i].item.active = false;
 
                     for (int j = 0; j < rowsItems.Count; j++)
                     {
-                        if (tableItemHolder.Items[i].item.name == rowsItems[j].GetComponent<TableItemToggle>().ItemName)
+                        if (tableItemHolder.ItemsClone[i].item.name == rowsItems[j].GetComponent<TableItemToggle>().ItemName)
                         {
                             rowsItems[j].GetComponent<TableItemToggle>().toggle.isOn = false;
                         }
@@ -368,16 +380,16 @@ namespace ProgressApocalypse
 
         public void DisableAllButSettlements(string Name)
         {
-            for (int i = 0; i < tableItemHolder.Items.Count(); i++)
+            for (int i = 0; i < tableItemHolder.ItemsClone.Count(); i++)
             {
-                if (tableItemHolder.Items[i].item.category == PaEnums.MarketCategories.Settlement &&
-                    tableItemHolder.Items[i].item.name != Name)
+                if (tableItemHolder.ItemsClone[i].item.category == PaEnums.MarketCategories.Settlement &&
+                    tableItemHolder.ItemsClone[i].item.name != Name)
                 {
-                    tableItemHolder.Items[i].item.active = false;
+                    tableItemHolder.ItemsClone[i].item.active = false;
 
                     for (int j = 0; j < rowsItems.Count; j++)
                     {
-                        if (tableItemHolder.Items[i].item.name == rowsItems[j].GetComponent<TableItemToggle>().ItemName 
+                        if (tableItemHolder.ItemsClone[i].item.name == rowsItems[j].GetComponent<TableItemToggle>().ItemName 
                             && rowsItems[j].GetComponent<TableItemToggle>().ItemName != Name)
                         {
                             rowsItems[j].GetComponent<TableItemToggle>().toggle.isOn = false;
